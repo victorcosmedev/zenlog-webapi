@@ -19,4 +19,8 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.23.80" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ZenLogAPI.Domain\ZenLogAPI.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
