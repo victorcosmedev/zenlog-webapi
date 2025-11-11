@@ -1,0 +1,6 @@
+@ZenLogAPI_HostAddress = http://localhost:5152
+
+GET {{ZenLogAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
