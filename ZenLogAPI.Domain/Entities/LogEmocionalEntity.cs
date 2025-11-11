@@ -17,6 +17,10 @@ namespace ZenLogAPI.Domain.Entities
         [Required]
         public NivelEmocional NivelEmocional { get; set; }
         public string? DescricaoSentimento { get; set; }
+        [Required]
+        public bool FezExercicios { get; set; }
+        [Required]
+        public int HorasDescanso { get; set; }
         public DateTime CreatedAt { get; set; }
         [ForeignKey(nameof(Colaborador))]
         public int ColaboradorId { get; set; }
