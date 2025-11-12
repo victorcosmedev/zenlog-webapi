@@ -21,6 +21,10 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
         public async Task<ColaboradorEntity?> AdicionarAsync(ColaboradorEntity colaborador)
         {
+            var empresaExiste = await _context.Empresas.AnyAsync(e => e.Id == colaborador.EmpresaId);
+
+            if (empresaExiste == false) return null;
+
             await _context.Colaboradores.AddAsync(colaborador);
             await _context.SaveChangesAsync();
             return colaborador;
@@ -56,17 +60,23 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
             if (colaboradorExistente == null) return null;
 
+            var empresaExiste = await _context.Empresas.AnyAsync(e => e.Id == colaborador.EmpresaId);
+
+            if(empresaExiste == false) return null;
+
+
             colaboradorExistente.Username = colaborador.Username;
             colaboradorExistente.Email = colaborador.Email;
             colaboradorExistente.DataNascimento = colaborador.DataNascimento;
             colaboradorExistente.NumeroMatricula = colaborador.NumeroMatricula;
             colaboradorExistente.Cpf = colaborador.Cpf;
+            colaboradorExistente.EmpresaId = colaborador.EmpresaId;
 
             await _context.SaveChangesAsync();
             return colaboradorExistente;
         }
 
-        public async Task<PageResultModel<IEnumerable<ColaboradorEntity>>> ListarAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<PageResultModel<IEnumerable<ColaboradorEntity>?>> ListarAsync(int pageNumber = 1, int pageSize = 10)
         {
             var colaboradores = await _context.Colaboradores
                 .Skip(pageNumber - 1 * pageSize)
@@ -84,7 +94,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
             return pageResultModel;
         }
 
-        public async Task<PageResultModel<IEnumerable<ColaboradorEntity>>> ListarPorEmpresaAsync(int empresaId, int pageNumber = 1, int pageSize = 10)
+        public async Task<PageResultModel<IEnumerable<ColaboradorEntity>?>> ListarPorEmpresaAsync(int empresaId, int pageNumber = 1, int pageSize = 10)
         {
             var colaboradores = await _context.Colaboradores
                 .Where(x => x.EmpresaId == empresaId)
@@ -94,7 +104,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
             var totalItens = await _context.Colaboradores.CountAsync();
 
-            var pageResultModel = new PageResultModel<IEnumerable<ColaboradorEntity>>
+            var pageResultModel = new PageResultModel<IEnumerable<ColaboradorEntity>?>
             {
                 Items = colaboradores,
                 NumeroPagina = pageNumber,

@@ -22,6 +22,10 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
         public async Task<LogEmocionalEntity?> AdicionarAsync(LogEmocionalEntity log)
         {
+            var colaboradorExiste = await _context.Colaboradores.AnyAsync(c => c.Id == log.ColaboradorId);
+
+            if (colaboradorExiste == false) return null;
+
             await _context.LogsEmocionais.AddAsync(log);
             await _context.SaveChangesAsync();
             return log;
@@ -32,6 +36,10 @@ namespace ZenLogAPI.Infra.Data.Repositories
             var logExistente = await _context.LogsEmocionais.FirstOrDefaultAsync(l => l.Id == id);
 
             if (logExistente == null) return null;
+
+            var colaboradorExiste = await _context.Colaboradores.AnyAsync(c => c.Id == log.ColaboradorId);
+
+            if (colaboradorExiste == false) return null;
 
             logExistente.NivelEmocional = log.NivelEmocional;
             logExistente.DescricaoSentimento = log.DescricaoSentimento;
