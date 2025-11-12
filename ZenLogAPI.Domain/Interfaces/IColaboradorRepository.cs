@@ -17,6 +17,7 @@ namespace ZenLogAPI.Domain.Interfaces
         Task<ColaboradorEntity?> AdicionarAsync(ColaboradorEntity colaborador);
         Task<ColaboradorEntity?> EditarAsync(int id, ColaboradorEntity colaborador);
         Task<ColaboradorEntity?> RemoverAsync(int id);
-        Task<PageResultModel<IEnumerable<ColaboradorEntity>>> ListarAsync(int pageNumber = 0, int pageSize = 10);
+        Task<PageResultModel<IEnumerable<ColaboradorEntity>>> ListarAsync(int pageNumber = 1, int pageSize = 10);
+        Task<PageResultModel<IEnumerable<ColaboradorEntity>>> ListarPorEmpresaAsync(int empresaId, int pageNumber = 1, int pageSize = 10);
     }
 }
