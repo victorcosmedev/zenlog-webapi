@@ -8,9 +8,9 @@ using ZenLogAPI.Domain.Entities;
 
 namespace ZenLogAPI.Application.Mappers
 {
-    public class EmpresaMapper
+    public static class EmpresaMapper
     {
-        public static EmpresaEntity ToEntity(EmpresaDto dto)
+        public static EmpresaEntity ToEntity(this EmpresaDto dto)
         {
             return new EmpresaEntity
             {
@@ -20,7 +20,7 @@ namespace ZenLogAPI.Application.Mappers
             };
         }
 
-        public static EmpresaDto ToDto(EmpresaEntity entity)
+        public static EmpresaDto ToDto(this EmpresaEntity entity)
         {
             return new EmpresaDto
             {

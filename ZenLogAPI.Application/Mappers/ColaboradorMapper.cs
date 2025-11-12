@@ -5,7 +5,7 @@ namespace ZenLogAPI.Application.Mappers
 {
     public static class ColaboradorMapper
     {
-        public static ColaboradorEntity ToEntity(ColaboradorDto dto)
+        public static ColaboradorEntity ToEntity(this ColaboradorDto dto)
         {
             return new ColaboradorEntity
             {
@@ -19,7 +19,7 @@ namespace ZenLogAPI.Application.Mappers
             };
         }
 
-        public static ColaboradorDto ToDto(ColaboradorEntity entity)
+        public static ColaboradorDto ToDto(this ColaboradorEntity entity)
         {
             return new ColaboradorDto
             {

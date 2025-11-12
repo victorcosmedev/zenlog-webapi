@@ -8,9 +8,9 @@ using ZenLogAPI.Domain.Entities;
 
 namespace ZenLogAPI.Application.Mappers
 {
-    public class LogEmocionalMapper
+    public static class LogEmocionalMapper
     {
-        public static LogEmocionalEntity ToEntity(LogEmocionalDto dto)
+        public static LogEmocionalEntity ToEntity(this LogEmocionalDto dto)
         {
             return new LogEmocionalEntity
             {
@@ -24,7 +24,7 @@ namespace ZenLogAPI.Application.Mappers
             };
         }
 
-        public static LogEmocionalDto ToDto(LogEmocionalEntity entity)
+        public static LogEmocionalDto ToDto(this LogEmocionalEntity entity)
         {
             return new LogEmocionalDto
             {
