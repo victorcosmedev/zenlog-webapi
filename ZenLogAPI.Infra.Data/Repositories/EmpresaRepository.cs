@@ -72,7 +72,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
                 .FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<PageResultModel<IEnumerable<EmpresaEntity>>> ListarAsync(int pageNumber = 1, int pageSize = 10)
+        public async Task<PageResultModel<IEnumerable<EmpresaEntity>?>> ListarAsync(int pageNumber = 1, int pageSize = 10)
         {
             var totalItems = await _context.Empresas.CountAsync();
 
