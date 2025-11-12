@@ -1,22 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace ZenLogAPI.Domain.Entities
+namespace ZenLogAPI.Application.DTOs
 {
-    [Table("tb_zl_user")]
-    [Index(nameof(Email), Name = "IDX_colaborador_email")]
-    [Index(nameof(NumeroMatricula), Name = "IDX_colaborador_matricula")]
-    [Index(nameof(Cpf), Name = "IDX_colaborador_cpf")]
-    public class ColaboradorEntity
+    public class ColaboradorDto
     {
-        [Key]
+        [Required]
+        [Range(0, int.MaxValue)]
         public int Id { get; set; }
         [Required]
         [StringLength(100)]
@@ -34,10 +28,8 @@ namespace ZenLogAPI.Domain.Entities
         [StringLength(11)]
         [Range(11, 11)]
         public string Cpf { get; set; }
-        [ForeignKey(nameof(Empresa))]
+        [Required]
+        [Range(0, int.MaxValue)]
         public int EmpresaId { get; set; }
-        [JsonIgnore]
-        public EmpresaEntity Empresa { get; set; }
-        public List<LogEmocionalEntity>? LogsEmocionais { get; set; }
     }
 }
