@@ -14,6 +14,6 @@ namespace ZenLogAPI.Domain.Interfaces
         Task<LogEmocionalEntity?> EditarAsync(int id, LogEmocionalEntity log);
         Task<LogEmocionalEntity?> RemoverAsync(int id);
         Task<LogEmocionalEntity?> BuscarPorIdAsync(int id);
-        Task<PageResultModel<IEnumerable<LogEmocionalEntity>>> ListarPorColaboradorAsync(int colaboradorId, int pageNumber = 1, int pageSize = 10);
+        Task<PageResultModel<IEnumerable<LogEmocionalEntity>?>> ListarPorColaboradorAsync(int colaboradorId, int pageNumber = 1, int pageSize = 10);
     }
 }
