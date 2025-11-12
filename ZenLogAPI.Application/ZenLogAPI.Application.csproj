@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ZenLogAPI.Domain\ZenLogAPI.Domain.csproj" />
   </ItemGroup>
 

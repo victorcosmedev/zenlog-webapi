@@ -65,7 +65,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
                 .FirstOrDefaultAsync(l => l.Id == id);
         }
 
-        public async Task<PageResultModel<IEnumerable<LogEmocionalEntity>>> ListarPorColaboradorAsync(int colaboradorId, int pageNumber = 1, int pageSize = 10)
+        public async Task<PageResultModel<IEnumerable<LogEmocionalEntity>?>> ListarPorColaboradorAsync(int colaboradorId, int pageNumber = 1, int pageSize = 10)
         {
             var query = _context.LogsEmocionais
                 .Where(l => l.ColaboradorId == colaboradorId);
