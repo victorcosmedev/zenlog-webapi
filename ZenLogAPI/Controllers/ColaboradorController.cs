@@ -9,6 +9,7 @@ using ZenLogAPI.Domain.Models.PageResultModel;
 namespace ZenLogAPI.Controllers
 {
     [ApiController]
+    [Route("api/[controller]")]
     public class ColaboradorController : ControllerBase
     {
         private readonly IColaboradorApplicationService _service;
@@ -35,6 +36,9 @@ namespace ZenLogAPI.Controllers
                     {
                         new LinkDto { Rel = "self", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = result.Value.Email }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = result.Value.Cpf }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = result.Value.NumeroMatricula}), Method = "GET" },
                         new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
                         new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
                     }
@@ -57,7 +61,25 @@ namespace ZenLogAPI.Controllers
                 var result = await _service.EditarAsync(id, colaboradorDto);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.BadRequest, result.Error);
 
-                return Ok(result.Value);
+                
+                var hateoas = new HateoasResponse<ColaboradorDto>
+                {
+                    Data = result.Value,
+                    Links = new List<LinkDto>
+                    {
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
+                        new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = result.Value.Email }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = result.Value.Cpf }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = result.Value.NumeroMatricula}), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                    }
+                };
+
+                return Ok(hateoas);
+
             }
             catch (Exception ex)
             {
@@ -72,7 +94,24 @@ namespace ZenLogAPI.Controllers
             {
                 var result = await _service.RemoverAsync(id);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
-                return NoContent();
+
+                var hateoas = new HateoasResponse<ColaboradorDto>
+                {
+                    Data = result.Value,
+                    Links = new List<LinkDto>
+                    {
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
+                        new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" },
+                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync)), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync)), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync)), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync)), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync)), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync)), Method = "DELETE" }
+                    }
+                };
+
+                return Ok(hateoas);
             }
             catch (Exception ex)
             {
@@ -160,6 +199,7 @@ namespace ZenLogAPI.Controllers
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
                         new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
                     }
@@ -190,6 +230,7 @@ namespace ZenLogAPI.Controllers
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
                         new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
                         new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
                     }
@@ -220,6 +261,7 @@ namespace ZenLogAPI.Controllers
                         new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
                         new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
                     }
@@ -250,6 +292,7 @@ namespace ZenLogAPI.Controllers
                         new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
                         new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
                     }
