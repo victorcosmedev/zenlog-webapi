@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.Contracts;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
+using ZenLogAPI.Utils.Doc;
 
 namespace ZenLogAPI.Controllers
 {
@@ -19,6 +21,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = ApiDoc.AdicionarAsyncSummary,
+            Description = ApiDoc.AdicionarAsyncDescription
+        )]
         public async Task<IActionResult> AdicionarAsync([FromBody] ColaboradorDto colaboradorDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -53,6 +59,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.EditarAsyncSummary,
+            Description = ApiDoc.EditarAsyncDescription
+        )]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] ColaboradorDto colaboradorDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -88,6 +98,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.RemoverAsyncSummary,
+            Description = ApiDoc.RemoverAsyncDescription
+        )]
         public async Task<IActionResult> RemoverAsync(int id)
         {
             try
@@ -120,6 +134,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = ApiDoc.ListarAsyncSummary,
+            Description = ApiDoc.ListarAsyncDescription
+        )]
         public async Task<IActionResult> ListarAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -150,7 +168,11 @@ namespace ZenLogAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("por-empresa")]
+        [SwaggerOperation(
+            Summary = ApiDoc.ListarPorEmpresaSummary,
+            Description = ApiDoc.ListarPorEmpresaDescription
+        )]
         public async Task<IActionResult> ListarPorEmpresaAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] int empresaId = 0)
         {
             try
@@ -182,6 +204,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.BuscarPorIdAsyncSummary,
+            Description = ApiDoc.BuscarPorIdAsyncDescription
+        )]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
             try
@@ -213,7 +239,11 @@ namespace ZenLogAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("por-email")]
+        [SwaggerOperation(
+            Summary = ApiDoc.BuscarPorEmailAsyncSummary,
+            Description = ApiDoc.BuscarPorEmailAsyncDescription
+        )]
         public async Task<IActionResult> BuscarPorEmailAsync([FromQuery] string email)
         {
             try
@@ -244,7 +274,11 @@ namespace ZenLogAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("por-cpf")]
+        [SwaggerOperation(
+            Summary = ApiDoc.BuscarPorCpfAsyncSummary,
+            Description = ApiDoc.BuscarPorCpfAsyncDescription
+        )]
         public async Task<IActionResult> BuscarPorCpfAsync([FromQuery] string cpf)
         {
             try
@@ -275,7 +309,11 @@ namespace ZenLogAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("por-matricula")]
+        [SwaggerOperation(
+            Summary = ApiDoc.BuscarPorMatriculaAsyncSummary,
+            Description = ApiDoc.BuscarPorMatriculaAsyncDescription
+        )]
         public async Task<IActionResult> BuscarPorMatriculaAsync([FromQuery] string numeroMatricula)
         {
             try
