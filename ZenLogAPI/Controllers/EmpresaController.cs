@@ -173,13 +173,13 @@ namespace ZenLogAPI.Controllers
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                    new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                    new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
-                    new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
+                        new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" }
+                    }
                 };
 
                 return Ok(hateoas);

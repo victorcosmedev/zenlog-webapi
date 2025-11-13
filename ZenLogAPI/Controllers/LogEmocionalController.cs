@@ -139,13 +139,13 @@ namespace ZenLogAPI.Controllers
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                    new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                    new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
-                    new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = result.Value.ColaboradorId }), Method = "GET" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
+                        new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = result.Value.ColaboradorId }), Method = "GET" }
+                    }
                 };
 
                 return Ok(hateoas);
@@ -205,11 +205,13 @@ namespace ZenLogAPI.Controllers
                 {
                     Data = log,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = log.Id }), Method = "GET" },
-                    new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = log.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = log.Id }), Method = "DELETE" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = log.Id }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = log.Id }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = log.Id }), Method = "DELETE" },
+                        new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = log.ColaboradorId }), Method = "GET" }
+                    }
                 }),
                 TotalItens = pageResult.TotalItens,
                 NumeroPagina = pageResult.NumeroPagina,
