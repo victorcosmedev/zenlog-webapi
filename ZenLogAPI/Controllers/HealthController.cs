@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,8 +11,9 @@ using ZenLogAPI.Utils.Samples.Health;
 namespace ZenLogAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     [AllowAnonymous]
+    [ApiVersion("1.0")]
+    [Route("/api/v{version:apiVersion}/[controller]")]
     public class HealthController : ControllerBase
     {
         private readonly HealthCheckService _healthCheckService;

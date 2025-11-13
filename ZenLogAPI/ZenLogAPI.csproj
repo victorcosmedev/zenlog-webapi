@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ZenLogAPI.Application\ZenLogAPI.Application.csproj" />
+    <ProjectReference Include="..\ZenLogAPI.IoC\ZenLogAPI.IoC.csproj" />
   </ItemGroup>
 
 </Project>

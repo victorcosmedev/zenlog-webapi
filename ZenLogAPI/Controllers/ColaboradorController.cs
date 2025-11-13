@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Diagnostics.Contracts;
 using System.Net;
@@ -11,7 +12,8 @@ using ZenLogAPI.Utils.Doc;
 namespace ZenLogAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("/api/v{version:apiVersion}/[controller]")]
     public class ColaboradorController : ControllerBase
     {
         private readonly IColaboradorApplicationService _service;

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
@@ -10,7 +11,8 @@ using ZenLogAPI.Utils.Doc;
 namespace ZenLogAPI.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("/api/v{version:apiVersion}/[controller]")]
     public class LogEmocionalController : ControllerBase
     {
         private readonly ILogEmocionalApplicationService _service;
