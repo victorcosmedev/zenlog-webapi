@@ -73,5 +73,13 @@
         public const string BuscarPorIdEmpresaAsyncSummary = "Busca uma empresa por ID.";
         public const string BuscarPorIdEmpresaAsyncDescription = "Retorna os detalhes de uma empresa com base no ID fornecido.";
         #endregion
+
+        #region HealthCheckDoc
+        public const string LiveCheckSummary = "Verifica se a API está online (Liveness)";
+        public const string LiveCheckDescription = "Verifica a saúde básica da aplicação (se está 'viva'). Retorna Healthy se a aplicação iniciou corretamente.";
+
+        public const string ReadyCheckSummary = "Verifica se a API está pronta para receber tráfego (Readiness)";
+        public const string ReadyCheckDescription = "Verifica a saúde das dependências externas (como o banco de dados Oracle). Retorna Healthy se a API e suas dependências estão prontas.";
+        #endregion
     }
 }

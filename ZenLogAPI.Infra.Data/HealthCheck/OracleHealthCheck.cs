@@ -26,11 +26,11 @@ namespace ZenLogAPI.Infra.Data.HealthCheck
                     .Take(1)
                     .AnyAsync(cancellationToken);
 
-                return HealthCheckResult.Healthy("Banco de dados esta online");
+                return HealthCheckResult.Healthy("Banco de dados está online");
             }
             catch (Exception ex)
             {
-                return HealthCheckResult.Unhealthy("Banco de dados esta offline", ex);
+                return HealthCheckResult.Unhealthy("Banco de dados está offline", ex);
             }
         }
     }
