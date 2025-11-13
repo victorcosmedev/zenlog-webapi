@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
+using ZenLogAPI.Utils.Doc;
 
 namespace ZenLogAPI.Controllers
 {
@@ -18,6 +20,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = ApiDoc.AdicionarEmpresaAsyncSummary,
+            Description = ApiDoc.AdicionarEmpresaAsyncDescription
+        )]
         public async Task<IActionResult> AdicionarAsync([FromBody] EmpresaDto empresaDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -50,6 +56,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.EditarEmpresaAsyncSummary,
+            Description = ApiDoc.EditarEmpresaAsyncDescription
+        )]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] EmpresaDto empresaDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -82,6 +92,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.RemoverEmpresaAsyncSummary,
+            Description = ApiDoc.RemoverEmpresaAsyncDescription
+        )]
         public async Task<IActionResult> RemoverAsync(int id)
         {
             try
@@ -108,6 +122,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = ApiDoc.ListarEmpresasAsyncSummary,
+            Description = ApiDoc.ListarEmpresasAsyncDescription
+        )]
         public async Task<IActionResult> ListarAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -139,6 +157,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.BuscarPorIdEmpresaAsyncSummary,
+            Description = ApiDoc.BuscarPorIdEmpresaAsyncDescription
+        )]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
             try

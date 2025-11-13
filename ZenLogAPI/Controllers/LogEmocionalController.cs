@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
+using ZenLogAPI.Utils.Doc;
 
 namespace ZenLogAPI.Controllers
 {
@@ -19,6 +21,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = ApiDoc.AdicionarLogAsyncSummary,
+            Description = ApiDoc.AdicionarLogAsyncDescription
+        )]
         public async Task<IActionResult> AdicionarAsync([FromBody] LogEmocionalDto logDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -51,6 +57,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpPut("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.EditarLogAsyncSummary,
+            Description = ApiDoc.EditarLogAsyncDescription
+        )]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] LogEmocionalDto logDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -83,6 +93,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.RemoverLogAsyncSummary,
+            Description = ApiDoc.RemoverLogAsyncDescription
+        )]
         public async Task<IActionResult> RemoverAsync(int id)
         {
             try
@@ -109,6 +123,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpGet("{id}")]
+        [SwaggerOperation(
+            Summary = ApiDoc.BuscarPorIdLogAsyncSummary,
+            Description = ApiDoc.BuscarPorIdLogAsyncDescription
+        )]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
             try
@@ -139,6 +157,10 @@ namespace ZenLogAPI.Controllers
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = ApiDoc.ListarPorColaboradorAsyncSummary,
+            Description = ApiDoc.ListarPorColaboradorAsyncDescription
+        )]
         public async Task<IActionResult> ListarPorColaboradorAsync([FromQuery] int colaboradorId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             if (colaboradorId <= 0)

@@ -33,5 +33,45 @@
         public const string BuscarPorMatriculaAsyncDescription = "Retorna os detalhes de um colaborador com base no número de matrícula fornecido.";
 
         #endregion
+
+        #region LogEmocionalController
+
+        public const string LogEmocionalControllerSummary = "Gerencia as operações relacionadas aos logs emocionais.";
+
+        public const string AdicionarLogAsyncSummary = "Adiciona um novo log emocional.";
+        public const string AdicionarLogAsyncDescription = "Cria um novo log emocional no sistema.";
+
+        public const string EditarLogAsyncSummary = "Edita um log emocional existente.";
+        public const string EditarLogAsyncDescription = "Atualiza as informações de um log emocional existente com base no ID fornecido.";
+
+        public const string RemoverLogAsyncSummary = "Remove um log emocional.";
+        public const string RemoverLogAsyncDescription = "Remove um log emocional do sistema com base no ID fornecido.";
+
+        public const string BuscarPorIdLogAsyncSummary = "Busca um log emocional por ID.";
+        public const string BuscarPorIdLogAsyncDescription = "Retorna os detalhes de um log emocional com base no ID fornecido.";
+
+        public const string ListarPorColaboradorAsyncSummary = "Lista logs emocionais por colaborador.";
+        public const string ListarPorColaboradorAsyncDescription = "Retorna uma lista paginada de logs emocionais associados a um colaborador específico.";
+        #endregion
+
+        #region EmpresaController
+
+        public const string EmpresaControllerSummary = "Gerencia as operações relacionadas às empresas.";
+
+        public const string AdicionarEmpresaAsyncSummary = "Adiciona uma nova empresa.";
+        public const string AdicionarEmpresaAsyncDescription = "Cria uma nova empresa no sistema.";
+
+        public const string EditarEmpresaAsyncSummary = "Edita uma empresa existente.";
+        public const string EditarEmpresaAsyncDescription = "Atualiza as informações de uma empresa existente com base no ID fornecido.";
+
+        public const string RemoverEmpresaAsyncSummary = "Remove uma empresa.";
+        public const string RemoverEmpresaAsyncDescription = "Remove uma empresa do sistema com base no ID fornecido.";
+
+        public const string ListarEmpresasAsyncSummary = "Lista todas as empresas.";
+        public const string ListarEmpresasAsyncDescription = "Retorna uma lista paginada de todas as empresas.";
+
+        public const string BuscarPorIdEmpresaAsyncSummary = "Busca uma empresa por ID.";
+        public const string BuscarPorIdEmpresaAsyncDescription = "Retorna os detalhes de uma empresa com base no ID fornecido.";
+        #endregion
     }
 }
