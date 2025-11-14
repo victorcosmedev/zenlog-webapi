@@ -43,6 +43,9 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
             logExistente.NivelEmocional = log.NivelEmocional;
             logExistente.DescricaoSentimento = log.DescricaoSentimento;
+            logExistente.HorasDescanso = log.HorasDescanso;
+            logExistente.FezExercicios = log.FezExercicios;
+            logExistente.LitrosAgua = log.LitrosAgua;
 
             await _context.SaveChangesAsync();
             return logExistente;

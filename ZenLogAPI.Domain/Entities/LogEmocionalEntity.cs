@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ZenLogAPI.Domain.Entities
 {
-    [Table("tb_zl_log_emocional")]
+    [Table("tb_zlg_log_emocional")]
     public class LogEmocionalEntity
     {
         [Key]
@@ -21,6 +21,8 @@ namespace ZenLogAPI.Domain.Entities
         public bool FezExercicios { get; set; }
         [Required]
         public int HorasDescanso { get; set; }
+        [Required]
+        public int LitrosAgua { get; set; }
         public DateTime CreatedAt { get; set; }
         [ForeignKey(nameof(Colaborador))]
         public int ColaboradorId { get; set; }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ZenLogAPI.Domain.Entities
 {
-    [Table("tb_zl_empresa")]
+    [Table("tb_zlg_empresa")]
     public class EmpresaEntity
     {
         [Key]

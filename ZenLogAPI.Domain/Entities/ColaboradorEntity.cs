@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ZenLogAPI.Domain.Entities
 {
-    [Table("tb_zl_user")]
+    [Table("tb_zlg_colaborador")]
     [Index(nameof(Email), Name = "IDX_colaborador_email")]
     [Index(nameof(NumeroMatricula), Name = "IDX_colaborador_matricula")]
     [Index(nameof(Cpf), Name = "IDX_colaborador_cpf")]
