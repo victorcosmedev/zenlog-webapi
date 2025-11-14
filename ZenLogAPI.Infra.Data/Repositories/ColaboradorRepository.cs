@@ -79,7 +79,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
         public async Task<PageResultModel<IEnumerable<ColaboradorEntity>?>> ListarAsync(int pageNumber = 1, int pageSize = 10)
         {
             var colaboradores = await _context.Colaboradores
-                .Skip(pageNumber - 1 * pageSize)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
@@ -98,7 +98,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
         {
             var colaboradores = await _context.Colaboradores
                 .Where(x => x.EmpresaId == empresaId)
-                .Skip(pageNumber - 1 * pageSize)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 

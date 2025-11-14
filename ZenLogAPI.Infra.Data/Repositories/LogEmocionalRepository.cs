@@ -77,7 +77,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
             var logs = await query
                 .OrderByDescending(l => l.CreatedAt)
-                .Skip(pageNumber - 1 * pageSize)
+                .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
