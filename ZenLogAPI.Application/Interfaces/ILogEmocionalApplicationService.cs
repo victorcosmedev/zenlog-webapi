@@ -16,5 +16,6 @@ namespace ZenLogAPI.Application.Interfaces
         Task<OperationResult<LogEmocionalDto?>> RemoverAsync(int id);
         Task<OperationResult<LogEmocionalDto?>> BuscarPorIdAsync(int id);
         Task<OperationResult<PageResultModel<IEnumerable<LogEmocionalDto>>>> ListarPorColaboradorAsync(int colaboradorId, int pageNumber = 1, int pageSize = 10);
+        Task<OperationResult<IEnumerable<LogEmocionalDto>?>> ListarTodosAsync();
     }
 }

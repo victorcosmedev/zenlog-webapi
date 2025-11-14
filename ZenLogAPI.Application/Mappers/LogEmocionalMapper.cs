@@ -18,6 +18,7 @@ namespace ZenLogAPI.Application.Mappers
                 NivelEmocional = dto.NivelEmocional,
                 DescricaoSentimento = dto.DescricaoSentimento,
                 FezExercicios = dto.FezExercicios,
+                LitrosAgua = dto.LitrosAgua,
                 HorasDescanso = dto.HorasDescanso,
                 CreatedAt = dto.CreatedAt,
                 ColaboradorId = dto.ColaboradorId
@@ -33,6 +34,7 @@ namespace ZenLogAPI.Application.Mappers
                 DescricaoSentimento = entity.DescricaoSentimento,
                 FezExercicios = entity.FezExercicios,
                 HorasDescanso = entity.HorasDescanso,
+                LitrosAgua = entity.LitrosAgua,
                 CreatedAt = entity.CreatedAt,
                 ColaboradorId = entity.ColaboradorId
             };

@@ -123,5 +123,23 @@ namespace ZenLogAPI.Application.Services
                 return OperationResult<LogEmocionalDto?>.Failure($"Erro: {ex.Message}", (int)HttpStatusCode.InternalServerError);
             }
         }
+
+        public async Task<OperationResult<IEnumerable<LogEmocionalDto>?>> ListarTodosAsync()
+        {
+            try
+            {
+                var logsEmocionais = await _repository.ListarTodosAsync();
+                if (logsEmocionais is null || !logsEmocionais.Any())
+                    return OperationResult<IEnumerable<LogEmocionalDto>?>.Failure("Nenhum log emocional encontrado.", (int)HttpStatusCode.NotFound);
+
+                var dtos = logsEmocionais.Select(log => log.ToDto());
+
+                return OperationResult<IEnumerable<LogEmocionalDto>?>.Success(dtos);
+            }
+            catch (Exception ex)
+            {
+                return OperationResult<IEnumerable<LogEmocionalDto>?>.Failure($"Erro: {ex.Message}", (int)HttpStatusCode.InternalServerError);
+            }
+        }
     }
 }

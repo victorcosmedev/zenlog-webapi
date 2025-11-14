@@ -21,4 +21,8 @@
     <ProjectReference Include="..\ZenLogAPI.IoC\ZenLogAPI.IoC.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Treinamento\" />
+  </ItemGroup>
+
 </Project>

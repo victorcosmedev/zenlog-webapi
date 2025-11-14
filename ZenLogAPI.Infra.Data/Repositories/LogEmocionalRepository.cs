@@ -91,5 +91,12 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
             return pageResultModel;
         }
+
+        public async Task<IEnumerable<LogEmocionalEntity>?> ListarTodosAsync()
+        {
+            return await _context.LogsEmocionais
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

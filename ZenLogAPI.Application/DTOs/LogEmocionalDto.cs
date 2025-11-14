@@ -14,6 +14,7 @@ namespace ZenLogAPI.Application.DTOs
         public string? DescricaoSentimento { get; set; }
         public bool FezExercicios { get; set; }
         public int HorasDescanso { get; set; }
+        public int LitrosAgua { get; set; }
         public DateTime CreatedAt { get; set; }
         public int ColaboradorId { get; set; }
     }
