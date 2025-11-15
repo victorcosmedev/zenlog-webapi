@@ -32,7 +32,7 @@ namespace ZenLogAPI.Application.Services
                     return OperationResult<LogEmocionalDto?>.Failure("Colaborador associado não encontrado.", (int)HttpStatusCode.NotFound);
 
                 var dto = logEmocional.ToDto();
-                return OperationResult<LogEmocionalDto?>.Success(dto);
+                return OperationResult<LogEmocionalDto?>.Success(dto, (int)HttpStatusCode.Created);
 
             }
             catch (Exception ex)

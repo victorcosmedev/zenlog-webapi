@@ -1,12 +1,14 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
 using ZenLogAPI.Utils.Doc;
+using ZenLogAPI.Utils.Samples.LogEmocional;
 
 namespace ZenLogAPI.Controllers
 {
@@ -27,6 +29,11 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.AdicionarLogAsyncSummary,
             Description = ApiDoc.AdicionarLogAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status201Created, "Log emocional criado com sucesso", typeof(HateoasResponse<LogEmocionalDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erro na requisição", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador associado não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status201Created, typeof(LogEmocionalResponseSample))]
         public async Task<IActionResult> AdicionarAsync([FromBody] LogEmocionalDto logDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -41,13 +48,13 @@ namespace ZenLogAPI.Controllers
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                    new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                    new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
-                    new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = result.Value.ColaboradorId }), Method = "GET" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
+                        new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
+                        new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = result.Value.ColaboradorId }), Method = "GET" }
+                    }
                 };
 
                 return CreatedAtAction(nameof(BuscarPorIdAsync), new { id = result.Value.Id }, hateoas);
@@ -63,6 +70,11 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.EditarLogAsyncSummary,
             Description = ApiDoc.EditarLogAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Log emocional editado com sucesso", typeof(HateoasResponse<LogEmocionalDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erro na requisição", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Log emocional ou colaborador associado não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LogEmocionalResponseSample))]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] LogEmocionalDto logDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -99,6 +111,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.RemoverLogAsyncSummary,
             Description = ApiDoc.RemoverLogAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Log emocional removido com sucesso", typeof(HateoasResponse<LogEmocionalDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Log emocional não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LogEmocionalResponseSample))]
         public async Task<IActionResult> RemoverAsync(int id)
         {
             try
@@ -129,6 +145,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.BuscarPorIdLogAsyncSummary,
             Description = ApiDoc.BuscarPorIdLogAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Log emocional encontrado com sucesso", typeof(HateoasResponse<LogEmocionalDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Log emocional não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LogEmocionalResponseSample))]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
             try
@@ -163,6 +183,11 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.ListarPorColaboradorAsyncSummary,
             Description = ApiDoc.ListarPorColaboradorAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista de logs emocionais paginada", typeof(HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<LogEmocionalDto>>>>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erro na requisição", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum log encontrado.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(LogEmocionalResponseListSample))]
         public async Task<IActionResult> ListarPorColaboradorAsync([FromQuery] int colaboradorId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             if (colaboradorId <= 0)
