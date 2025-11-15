@@ -119,7 +119,7 @@ namespace ZenLogAPI.Application.Services
 
                 if (success is null)
                 {
-                    return OperationResult<ColaboradorDto?>.Failure("Colaborador não encontrado para edição.", (int)HttpStatusCode.NotFound);
+                    return OperationResult<ColaboradorDto?>.Failure("Colaborador ou empresa associada não encontrado.", (int)HttpStatusCode.NotFound);
                 }
 
                 var dto = success.ToDto();

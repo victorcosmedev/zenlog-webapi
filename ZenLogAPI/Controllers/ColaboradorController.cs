@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 using System.Diagnostics.Contracts;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
@@ -8,6 +9,7 @@ using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
 using ZenLogAPI.Utils.Doc;
+using ZenLogAPI.Utils.Samples.Colaborador;
 
 namespace ZenLogAPI.Controllers
 {
@@ -27,6 +29,11 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.AdicionarAsyncSummary,
             Description = ApiDoc.AdicionarAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status201Created, "Colaborador criado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Empresa associada não encontrada", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Empresa associada não encontrada", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status201Created, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> AdicionarAsync([FromBody] ColaboradorDto colaboradorDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -65,6 +72,11 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.EditarAsyncSummary,
             Description = ApiDoc.EditarAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador editado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Erro na requisição.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador ou empresa associada não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] ColaboradorDto colaboradorDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -104,6 +116,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.RemoverAsyncSummary,
             Description = ApiDoc.RemoverAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador removido com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador não encontrado para remoção.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> RemoverAsync(int id)
         {
             try
@@ -140,6 +156,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.ListarAsyncSummary,
             Description = ApiDoc.ListarAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista de colaboradores paginada", typeof(HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<ColaboradorDto>>>>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum colaborador encontrado.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseListSample))]
         public async Task<IActionResult> ListarAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -175,6 +195,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.ListarPorEmpresaSummary,
             Description = ApiDoc.ListarPorEmpresaDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista de colaboradores paginada por empresa", typeof(HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<ColaboradorDto>>>>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum colaborador encontrado para a empresa especificada", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseListSample))]
         public async Task<IActionResult> ListarPorEmpresaAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] int empresaId = 0)
         {
             try
@@ -210,6 +234,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.BuscarPorIdAsyncSummary,
             Description = ApiDoc.BuscarPorIdAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador encontrado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
             try
@@ -246,6 +274,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.BuscarPorEmailAsyncSummary,
             Description = ApiDoc.BuscarPorEmailAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador encontrado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorEmailAsync([FromQuery] string email)
         {
             try
@@ -281,6 +313,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.BuscarPorCpfAsyncSummary,
             Description = ApiDoc.BuscarPorCpfAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador encontrado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorCpfAsync([FromQuery] string cpf)
         {
             try
@@ -316,6 +352,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.BuscarPorMatriculaAsyncSummary,
             Description = ApiDoc.BuscarPorMatriculaAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador encontrado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador não encontrado", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorMatriculaAsync([FromQuery] string numeroMatricula)
         {
             try
