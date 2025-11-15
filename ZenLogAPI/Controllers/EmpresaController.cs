@@ -1,12 +1,14 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
 using ZenLogAPI.Utils.Doc;
+using ZenLogAPI.Utils.Samples.Empresa;
 
 namespace ZenLogAPI.Controllers
 {
@@ -26,6 +28,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.AdicionarEmpresaAsyncSummary,
             Description = ApiDoc.AdicionarEmpresaAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status201Created, "Empresa criada com sucesso", typeof(HateoasResponse<EmpresaDto>))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Dados inválidos.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status201Created, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> AdicionarAsync([FromBody] EmpresaDto empresaDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -62,6 +68,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.EditarEmpresaAsyncSummary,
             Description = ApiDoc.EditarEmpresaAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Empresa editada com sucesso", typeof(HateoasResponse<EmpresaDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Empresa não encontrada", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] EmpresaDto empresaDto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -98,6 +108,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.RemoverEmpresaAsyncSummary,
             Description = ApiDoc.RemoverEmpresaAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Empresa removida com sucesso", typeof(HateoasResponse<EmpresaDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Empresa não encontrada.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> RemoverAsync(int id)
         {
             try
@@ -128,6 +142,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.ListarEmpresasAsyncSummary,
             Description = ApiDoc.ListarEmpresasAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Lista de empresas paginada", typeof(HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<EmpresaDto>>>>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhuma empresa encontrada.", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseListSample))]
         public async Task<IActionResult> ListarAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
             try
@@ -163,6 +181,10 @@ namespace ZenLogAPI.Controllers
             Summary = ApiDoc.BuscarPorIdEmpresaAsyncSummary,
             Description = ApiDoc.BuscarPorIdEmpresaAsyncDescription
         )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Empresa encontrada com sucesso", typeof(HateoasResponse<EmpresaDto>))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Empresa não encontrada", typeof(string))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
             try
