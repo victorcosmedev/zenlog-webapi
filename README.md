@@ -268,3 +268,11 @@ Aqui estão disponibilizados os JSONs para teste da API. A ordem de execução r
 
 ---
 **POST (Predição)** _Obs: Este endpoint simula uma predição. O `nivelEmocional` retornado será o valor previsto pelo modelo._ **URL:** `http://localhost:5152/api/v1/AI`
+```
+{
+  "fezExercicios": 1,
+  "horasDescanso": 5,
+  "litrosAgua": 1,
+  "nivelEmocional": 0
+}
+``
