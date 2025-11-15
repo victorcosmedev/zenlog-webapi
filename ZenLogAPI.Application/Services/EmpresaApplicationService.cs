@@ -29,6 +29,10 @@ namespace ZenLogAPI.Application.Services
                 var entity = empresaDto.ToEntity();
 
                 var empresa = await _repository.AdicionarAsync(entity);
+                if(empresa is null)
+                {
+                    return OperationResult<EmpresaDto?>.Failure("Dados inválidos.", (int)HttpStatusCode.BadRequest);
+                }
                 var dto = empresa.ToDto();
 
                 return OperationResult<EmpresaDto?>.Success(dto);
