@@ -21,12 +21,10 @@ namespace ZenLogAPI.Application.DTOs
         [Required]
         public DateTime DataNascimento { get; set; }
         [Required]
-        [StringLength(10)]
-        [Range(10, 10)]
+        [StringLength(10, MinimumLength = 10)]
         public string NumeroMatricula { get; set; }
         [Required]
-        [StringLength(11)]
-        [Range(11, 11)]
+        [StringLength(11, MinimumLength = 11)]
         public string Cpf { get; set; }
         [Required]
         [Range(0, int.MaxValue)]
