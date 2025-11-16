@@ -24,7 +24,7 @@ namespace ZenLogAPI.Controllers.v1
             _service = colaboradorService;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateColaboradorV1")]
         [SwaggerOperation(
             Summary = ApiDoc.AdicionarAsyncSummary,
             Description = ApiDoc.AdicionarAsyncDescription
@@ -44,18 +44,19 @@ namespace ZenLogAPI.Controllers.v1
 
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.BadRequest, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = result.Value.NumeroMatricula}), Method = "GET" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "get", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = result.Value.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = result.Value.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = result.Value.NumeroMatricula, version = apiVersion.ToString()}), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 };
 
@@ -67,7 +68,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = "UpdateColaboradorV1")]
         [SwaggerOperation(
             Summary = ApiDoc.EditarAsyncSummary,
             Description = ApiDoc.EditarAsyncDescription
@@ -85,20 +86,20 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.EditarAsync(id, colaboradorDto);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.BadRequest, result.Error);
 
-                
+
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = result.Value.NumeroMatricula}), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "get", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = result.Value.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = result.Value.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = result.Value.NumeroMatricula, version = apiVersion.ToString()}), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 };
 
@@ -111,7 +112,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeleteColaboradorV1")]
         [SwaggerOperation(
             Summary = ApiDoc.RemoverAsyncSummary,
             Description = ApiDoc.RemoverAsyncDescription
@@ -127,19 +128,14 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.RemoverAsync(id);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync)), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync)), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync)), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync)), Method = "GET" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync)), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync)), Method = "DELETE" }
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "list", Href = Url.RouteUrl("ListColaboradoresV1", new { version = apiVersion.ToString() }), Method = "GET" }
                     }
                 };
 
@@ -151,7 +147,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet]
+        [HttpGet(Name = "ListColaboradoresV1")]
         [SwaggerOperation(
             Summary = ApiDoc.ListarAsyncSummary,
             Description = ApiDoc.ListarAsyncDescription
@@ -172,13 +168,15 @@ namespace ZenLogAPI.Controllers.v1
 
                 var pageResults = BuildPageResultsForListarTodos(result.Value);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
+
                 var response = new HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<ColaboradorDto>>>>
                 {
                     Data = pageResults,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(ListarAsync), new { pageNumber, pageSize }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("ListColaboradoresV1", new { pageNumber, pageSize, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" }
                     }
                 };
 
@@ -190,7 +188,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("por-empresa")]
+        [HttpGet("por-empresa", Name = "ListColaboradoresByEmpresaV1")]
         [SwaggerOperation(
             Summary = ApiDoc.ListarPorEmpresaSummary,
             Description = ApiDoc.ListarPorEmpresaDescription
@@ -211,13 +209,15 @@ namespace ZenLogAPI.Controllers.v1
 
                 var pageResults = BuildPageResultsForListarTodos(result.Value);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
+
                 var response = new HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<ColaboradorDto>>>>
                 {
                     Data = pageResults,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(ListarPorEmpresaAsync), new { pageNumber, pageSize, empresaId }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("ListColaboradoresByEmpresaV1", new { pageNumber, pageSize, empresaId, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" }
                     }
                 };
 
@@ -229,7 +229,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetColaboradorByIdV1")]
         [SwaggerOperation(
             Summary = ApiDoc.BuscarPorIdAsyncSummary,
             Description = ApiDoc.BuscarPorIdAsyncDescription
@@ -246,18 +246,19 @@ namespace ZenLogAPI.Controllers.v1
 
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = result.Value.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = result.Value.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = result.Value.NumeroMatricula, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 };
 
@@ -269,7 +270,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("por-email")]
+        [HttpGet("por-email", Name = "GetColaboradorByEmailV1")]
         [SwaggerOperation(
             Summary = ApiDoc.BuscarPorEmailAsyncSummary,
             Description = ApiDoc.BuscarPorEmailAsyncDescription
@@ -285,18 +286,19 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.BuscarPorEmailAsync(email);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = result.Value.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = result.Value.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getById", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = result.Value.NumeroMatricula, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 };
 
@@ -308,7 +310,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("por-cpf")]
+        [HttpGet("por-cpf", Name = "GetColaboradorByCpfV1")]
         [SwaggerOperation(
             Summary = ApiDoc.BuscarPorCpfAsyncSummary,
             Description = ApiDoc.BuscarPorCpfAsyncDescription
@@ -324,18 +326,19 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.BuscarPorCpfAsync(cpf);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = result.Value.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getById", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = result.Value.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = result.Value.NumeroMatricula, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 };
 
@@ -347,7 +350,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("por-matricula")]
+        [HttpGet("por-matricula", Name = "GetColaboradorByMatriculaV1")]
         [SwaggerOperation(
             Summary = ApiDoc.BuscarPorMatriculaAsyncSummary,
             Description = ApiDoc.BuscarPorMatriculaAsyncDescription
@@ -362,19 +365,20 @@ namespace ZenLogAPI.Controllers.v1
             {
                 var result = await _service.BuscarPorMatriculaAsync(numeroMatricula);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
-                
+
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { numeroMatricula = result.Value.NumeroMatricula }), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = result.Value.NumeroMatricula, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getById", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = result.Value.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = result.Value.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateColaboradorV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 };
 
@@ -397,14 +401,14 @@ namespace ZenLogAPI.Controllers.v1
                     Data = c,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = c.Id, version = apiVersion.ToString() }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = c.Email, version = apiVersion.ToString() }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = c.Cpf, version = apiVersion.ToString() }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = c.NumeroMatricula, version = apiVersion.ToString()}), Method = "GET" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = c.Id , version = apiVersion.ToString()}), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = c.Id, version = apiVersion.ToString() }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetColaboradorByIdV1", new { id = c.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByEmail", Href = Url.RouteUrl("GetColaboradorByEmailV1", new { email = c.Email, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByCpf", Href = Url.RouteUrl("GetColaboradorByCpfV1", new { cpf = c.Cpf, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "getByMatricula", Href = Url.RouteUrl("GetColaboradorByMatriculaV1", new { numeroMatricula = c.NumeroMatricula, version = apiVersion.ToString()}), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateColaboradorV1", new { id = c.Id , version = apiVersion.ToString()}), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteColaboradorV1", new { id = c.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
-                }),
+                }).ToList(),
                 TotalItens = pageResult.TotalItens,
                 NumeroPagina = pageResult.NumeroPagina,
                 TamanhoPagina = pageResult.TamanhoPagina
