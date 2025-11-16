@@ -16,3 +16,4 @@ namespace ZenLogAPI.Utils.Samples.AI
             };
         }
     }
+}

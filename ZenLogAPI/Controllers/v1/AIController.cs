@@ -2,9 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 using System.Net;
 using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.AI;
 using ZenLogAPI.Application.Interfaces;
+using ZenLogAPI.Utils.Doc;
+using ZenLogAPI.Utils.Samples.AI;
 
 namespace ZenLogAPI.Controllers.v1
 {
@@ -47,6 +52,14 @@ namespace ZenLogAPI.Controllers.v1
         }
 
         [HttpGet]
+        [SwaggerOperation(
+            Summary = ApiDoc.AITreinarModeloSummary,
+            Description = ApiDoc.AITreinarModeloDescription
+        )]
+        [SwaggerResponse(StatusCodes.Status200OK, "Modelo treinado com sucesso", typeof(MessageResponseDto))]
+        [SwaggerResponse(StatusCodes.Status404NotFound, "Nenhum log encontrado", typeof(MessageResponseDto))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno", typeof(MessageResponseDto))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(TreinarModeloResponseSample))]
         public async Task<IActionResult> TreinarModelo()
         {
             try
@@ -92,6 +105,15 @@ namespace ZenLogAPI.Controllers.v1
         }
 
         [HttpPost]
+        [SwaggerOperation(
+            Summary = ApiDoc.AIPredicaoSummary,
+            Description = ApiDoc.AIPredicaoDescription
+        )]
+        [SwaggerRequestExample(typeof(LogEmocionalTrainingData), typeof(PredicaoRequestSample))]
+        [SwaggerResponse(StatusCodes.Status200OK, "Predição realizada com sucesso", typeof(LogEmocionalTrainingData))]
+        [SwaggerResponse(StatusCodes.Status400BadRequest, "Modelo não treinado", typeof(MessageResponseDto))]
+        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno", typeof(MessageResponseDto))]
+        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(PredicaoResponseSample))]
         public async Task<IActionResult> Predicao([FromBody] LogEmocionalTrainingData input)
         {
             if (!System.IO.File.Exists(_caminhoModelo))
