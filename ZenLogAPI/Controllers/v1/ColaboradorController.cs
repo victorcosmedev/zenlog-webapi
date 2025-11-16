@@ -19,9 +19,12 @@ namespace ZenLogAPI.Controllers.v1
     public class ColaboradorController : ControllerBase
     {
         private readonly IColaboradorApplicationService _service;
-        public ColaboradorController(IColaboradorApplicationService colaboradorService)
+        private readonly ILogger<ColaboradorController> _logger;
+
+        public ColaboradorController(IColaboradorApplicationService colaboradorService, ILogger<ColaboradorController> logger)
         {
             _service = colaboradorService;
+            _logger = logger;
         }
 
         [HttpPost(Name = "CreateColaboradorV1")]
@@ -36,6 +39,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status201Created, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> AdicionarAsync([FromBody] ColaboradorDto colaboradorDto)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             try
@@ -64,6 +69,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -80,6 +87,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] ColaboradorDto colaboradorDto)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             if (!ModelState.IsValid) return BadRequest(ModelState);
             try
             {
@@ -108,6 +117,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -123,6 +134,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> RemoverAsync(int id)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.RemoverAsync(id);
@@ -143,6 +156,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -158,6 +173,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseListSample))]
         public async Task<IActionResult> ListarAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.ListarAsync(pageNumber, pageSize);
@@ -184,6 +201,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -199,6 +218,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseListSample))]
         public async Task<IActionResult> ListarPorEmpresaAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10, [FromQuery] int empresaId = 0)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.ListarPorEmpresaAsync(empresaId, pageNumber, pageSize);
@@ -225,6 +246,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -240,6 +263,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.BuscarPorIdAsync(id);
@@ -266,6 +291,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -281,6 +308,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorEmailAsync([FromQuery] string email)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.BuscarPorEmailAsync(email);
@@ -306,6 +335,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -321,6 +352,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorCpfAsync([FromQuery] string cpf)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.BuscarPorCpfAsync(cpf);
@@ -346,6 +379,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -361,6 +396,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
         public async Task<IActionResult> BuscarPorMatriculaAsync([FromQuery] string numeroMatricula)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _service.BuscarPorMatriculaAsync(numeroMatricula);
@@ -386,6 +423,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }

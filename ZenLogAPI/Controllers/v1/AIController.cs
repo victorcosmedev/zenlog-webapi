@@ -22,11 +22,13 @@ namespace ZenLogAPI.Controllers.v1
         private readonly string _caminhoModelo =
             Path.Combine(Environment.CurrentDirectory, "Treinamento", "ModeloPredicao.zip");
         private readonly ILogEmocionalApplicationService _logEmocionalService;
+        private readonly ILogger<AIController> _logger;
 
-        public AIController(ILogEmocionalApplicationService logEmocionalService)
+        public AIController(ILogEmocionalApplicationService logEmocionalService, ILogger<AIController> logger)
         {
             _mlContext = new MLContext();
             _logEmocionalService = logEmocionalService;
+            _logger = logger;
         }
 
 
@@ -62,6 +64,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(TreinarModeloResponseSample))]
         public async Task<IActionResult> TreinarModelo()
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             try
             {
                 var result = await _logEmocionalService.ListarTodosAsync();
@@ -100,6 +104,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -116,6 +122,8 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(PredicaoResponseSample))]
         public async Task<IActionResult> Predicao([FromBody] LogEmocionalTrainingData input)
         {
+            var traceId = HttpContext.TraceIdentifier;
+
             if (!System.IO.File.Exists(_caminhoModelo))
                 return BadRequest("Treine o modelo primeiro.");
 
@@ -146,6 +154,8 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
+
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }

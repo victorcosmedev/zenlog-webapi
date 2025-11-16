@@ -18,9 +18,11 @@ namespace ZenLogAPI.Controllers.v1
     public class EmpresaController : ControllerBase
     {
         private readonly IEmpresaApplicationService _service;
-        public EmpresaController(IEmpresaApplicationService empresaService)
+        private readonly ILogger<EmpresaController> _logger;
+        public EmpresaController(IEmpresaApplicationService empresaService, ILogger<EmpresaController> logger)
         {
             _service = empresaService;
+            _logger = logger;
         }
 
         [HttpPost(Name = "CreateEmpresaV1")]
@@ -34,7 +36,11 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status201Created, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> AdicionarAsync([FromBody] EmpresaDto empresaDto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var traceId = HttpContext.TraceIdentifier;
+            
+            if (!ModelState.IsValid) {
+                return BadRequest(ModelState);
+            }
 
             try
             {
@@ -61,6 +67,7 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -76,6 +83,7 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> EditarAsync(int id, [FromBody] EmpresaDto empresaDto)
         {
+            var traceId = HttpContext.TraceIdentifier;
             if (!ModelState.IsValid) return BadRequest(ModelState);
             try
             {
@@ -102,6 +110,7 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -117,6 +126,7 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> RemoverAsync(int id)
         {
+            var traceId = HttpContext.TraceIdentifier;
             try
             {
                 var result = await _service.RemoverAsync(id);
@@ -137,6 +147,7 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -152,6 +163,7 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseListSample))]
         public async Task<IActionResult> ListarAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
+            var traceId = HttpContext.TraceIdentifier;
             try
             {
                 var result = await _service.ListarAsync(pageNumber, pageSize);
@@ -177,6 +189,7 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -192,6 +205,7 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(EmpresaResponseSample))]
         public async Task<IActionResult> BuscarPorIdAsync(int id)
         {
+            var traceId = HttpContext.TraceIdentifier;
             try
             {
                 var result = await _service.BuscarPorIdAsync(id);
@@ -216,6 +230,7 @@ namespace ZenLogAPI.Controllers.v1
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"[TraceId: {traceId}] Erro inesperado.");
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
         }

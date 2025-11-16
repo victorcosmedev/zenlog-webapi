@@ -17,10 +17,12 @@ namespace ZenLogAPI.Controllers.v1
     public class HealthController : ControllerBase
     {
         private readonly HealthCheckService _healthCheckService;
+        private readonly ILogger<HealthController> _logger;
 
-        public HealthController(HealthCheckService healthCheckService)
+        public HealthController(HealthCheckService healthCheckService, ILogger<HealthController> logger)
         {
             _healthCheckService = healthCheckService;
+            _logger = logger;
         }
 
         [HttpGet("live")]
@@ -33,6 +35,7 @@ namespace ZenLogAPI.Controllers.v1
         [SwaggerResponseExample(StatusCodes.Status200OK, typeof(HealthCheckLiveSample))]
         public async Task<IActionResult> Live(CancellationToken ct)
         {
+
             var report = await _healthCheckService.CheckHealthAsync(
                 r => r.Tags.Contains("live"), ct);
 
