@@ -55,7 +55,7 @@ namespace ZenLogAPI.Controllers
                 }
                 };
 
-                return CreatedAtAction(nameof(BuscarPorIdAsync), new { id = result.Value.Id }, hateoas);
+                return StatusCode(result.StatusCode, hateoas);
             }
             catch (Exception ex)
             {

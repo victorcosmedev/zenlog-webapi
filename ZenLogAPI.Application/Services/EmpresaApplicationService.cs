@@ -35,7 +35,7 @@ namespace ZenLogAPI.Application.Services
                 }
                 var dto = empresa.ToDto();
 
-                return OperationResult<EmpresaDto?>.Success(dto);
+                return OperationResult<EmpresaDto?>.Success(dto, (int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
