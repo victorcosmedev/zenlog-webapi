@@ -77,7 +77,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
             var totalItems = await _context.Empresas.CountAsync();
 
             var empresas = await _context.Empresas
-                .Skip(pageSize * pageNumber - 1)
+                .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .ToListAsync();
 
