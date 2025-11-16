@@ -1,4 +1,5 @@
 
+
 # ZenLog: Ferramenta de Monitoramento de Bem-Estar
 
 ## Nome Integrantes
@@ -12,6 +13,25 @@
 |Victor Nascimento Cosme|558856|
 
 </div>
+
+## Instalação do projeto - Orientações
+
+#### Credenciais
+Para rodar o projeto, é necessário inserir as credenciais do banco de dados Oracle da FIAP no arquivo `appsettings.Development.json`.
+#### Aplicação das entidades em tabelas no banco de dados
+Após inserir as credenciais, deve-se abrir o Packet Manager Console (Tools > NuGet Package Manager > Package Manager Console) e inserir o comando: `update-database` de modo que as entidades sejam refletidas em banco de dados.
+#### Rodar o projeto
+Feito isso, basta inicializar o projeto via **HTTP** (não HTTPS) e o Swagger da API será aberto automaticamente. Caso isso não ocorra, ele pode ser acessado através da URL `http://localhost:5045/swagger/index.html`.
+## Como rodar os testes?
+Os testes foram construídos de acordo com as orientações em aula, ou seja, com os devidos mocks. Temos 2 testes na nossa aplicação, o **MotoRepositoryTest** e o **EnderecoRepositoryTest**. 
+- Para rodá-los, basta ir ao canto superior esquerdo do Visual Studio e clicar em **"Tests"**. 
+- Após isso, clique em **"Test Explorer"** e no canto superior esquerdo da aba que abrir, clique na seta para baixo ao lado do botão de *play*. 
+- Clique em "Run All Tests In View".
+Feito isso, todos os testes implementados rodarão.
+
+## Versionamento da API
+- O versionamento de API foi utilizado no **ColaboradorController**, pois inicialmente (na v1) pensamos que uma busca de colaborador por ID seria interessante. Entretanto, afim de não expor os IDs dos registros dessa entidade no nosso banco de dados, optamos por remover este método do ColaboradorController.
+- Isto pode ser visualizado ao selecionar a v2 no canto superior direito do Swagger.
 
 ## 🎯 O Projeto
 
@@ -42,7 +62,7 @@ A ideia é que os usuários possam criar correlações entre dados como horas de
 
 ## Endpoints da API
 
-A URL base para todos os endpoints é: `http://localhost:5152/api/v1/`
+A URL base para todos os endpoints para testes é: `http://localhost:5152/api/v1/`
 ### **Health**
 
 -   `GET /api/v1/Health/live` → Verifica se a API está online (Liveness).
@@ -98,6 +118,8 @@ A URL base para todos os endpoints é: `http://localhost:5152/api/v1/`
 -   `GET /api/v1/AI` → Treina o modelo de ML com os dados existentes no banco.
     
 -   `POST /api/v1/AI` → Realiza a predição do nível emocional com base nos inputs.
+---
+
 ## Roteiro de testes
 Aqui estão disponibilizados os JSONs para teste da API. A ordem de execução recomendada é: **Empresa** → **Colaborador** → **LogEmocional**.
 
@@ -129,10 +151,10 @@ Aqui estão disponibilizados os JSONs para teste da API. A ordem de execução r
 
 ---
 **PUT** 
-**URL:** `http://localhost:5152/api/v1/Empresa/{id}` _(Use o ID retornado na criação da "Nova Empresa Tech SA")_
+**URL:** `http://localhost:5152/api/v1/Empresa/{id}`
 ```
 {
-  "id": 1,
+  "id": 0,// Use o ID retornado na criação da "Nova Empresa Tech SA"
   "razaoSocial": "Nova Empresa Tech SA (Atualizada)",
   "setor": 1
 }
@@ -195,7 +217,7 @@ Aqui estão disponibilizados os JSONs para teste da API. A ordem de execução r
   "dataNascimento": "1990-05-20T00:00:00",
   "numeroMatricula": "1234567890",
   "cpf": "12345678901",
-  "empresaId": 1
+  "empresaId": 0 // utilize aqui o ID da empresa criada previamente
 }
 ```
 ---
@@ -229,7 +251,7 @@ Aqui estão disponibilizados os JSONs para teste da API. A ordem de execução r
   "horasDescanso": 6,
   "litrosAgua": 1,
   "createdAt": "2025-11-14T18:00:00",
-  "colaboradorId": 1
+  "colaboradorId": 0 // insira o ID do colaborador criado previamente
 }
 ```
 
@@ -253,7 +275,7 @@ Aqui estão disponibilizados os JSONs para teste da API. A ordem de execução r
   "horasDescanso": 8,
   "litrosAgua": 3,
   "createdAt": "2025-11-15T14:30:00",
-  "colaboradorId": 1
+  "colaboradorId": 0 // insira o ID do colaborador criado previamente
 }
 ```
 
