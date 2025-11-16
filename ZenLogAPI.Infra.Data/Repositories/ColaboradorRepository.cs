@@ -60,9 +60,9 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
             if (colaboradorExistente == null) return null;
 
-            var empresaExiste = await _context.Empresas.AnyAsync(e => e.Id == colaborador.EmpresaId);
+            var empresaExiste = (await _context.Empresas.CountAsync(e => e.Id == colaborador.EmpresaId)) > 0;
 
-            if(empresaExiste == false) return null;
+            if (empresaExiste == false) return null;
 
 
             colaboradorExistente.Username = colaborador.Username;
@@ -70,7 +70,6 @@ namespace ZenLogAPI.Infra.Data.Repositories
             colaboradorExistente.DataNascimento = colaborador.DataNascimento;
             colaboradorExistente.NumeroMatricula = colaborador.NumeroMatricula;
             colaboradorExistente.Cpf = colaborador.Cpf;
-            colaboradorExistente.EmpresaId = colaborador.EmpresaId;
 
             await _context.SaveChangesAsync();
             return colaboradorExistente;
