@@ -11,10 +11,10 @@ using ZenLogAPI.Domain.Models.PageResultModel;
 using ZenLogAPI.Utils.Doc;
 using ZenLogAPI.Utils.Samples.Colaborador;
 
-namespace ZenLogAPI.Controllers.v1
+namespace ZenLogAPI.Controllers.v2
 {
     [ApiController]
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Route("/api/v{version:apiVersion}/[controller]")]
     public class ColaboradorController : ControllerBase
     {
@@ -50,7 +50,6 @@ namespace ZenLogAPI.Controllers.v1
                     Links = new List<LinkDto>
                     {
                         new LinkDto { Rel = "self", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = result.Value.Cpf }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = result.Value.NumeroMatricula}), Method = "GET" },
@@ -85,14 +84,13 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.EditarAsync(id, colaboradorDto);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.BadRequest, result.Error);
 
-                
+
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
                         new LinkDto { Rel = "self", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = result.Value.Cpf }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = result.Value.NumeroMatricula}), Method = "GET" },
@@ -134,7 +132,6 @@ namespace ZenLogAPI.Controllers.v1
                     {
                         new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync)), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync)), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync)), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync)), Method = "GET" },
@@ -167,7 +164,7 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.ListarAsync(pageNumber, pageSize);
                 if (result.IsSuccess == false) return StatusCode(result.StatusCode, result.Error);
 
-                if(result.Value?.Items == null || (!result.Value?.Items.Any() ?? false))
+                if (result.Value?.Items == null || (!result.Value?.Items.Any() ?? false))
                     return StatusCode((int)HttpStatusCode.NotFound, "Nenhum colaborador encontrado.");
 
                 var pageResults = BuildPageResultsForListarTodos(result.Value);
@@ -229,46 +226,6 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("{id}")]
-        [SwaggerOperation(
-            Summary = ApiDoc.BuscarPorIdAsyncSummary,
-            Description = ApiDoc.BuscarPorIdAsyncDescription
-        )]
-        [SwaggerResponse(StatusCodes.Status200OK, "Colaborador encontrado com sucesso", typeof(HateoasResponse<ColaboradorDto>))]
-        [SwaggerResponse(StatusCodes.Status404NotFound, "Colaborador não encontrado", typeof(string))]
-        [SwaggerResponse(StatusCodes.Status500InternalServerError, "Erro interno do servidor", typeof(string))]
-        [SwaggerResponseExample(StatusCodes.Status200OK, typeof(ColaboradorResponseSample))]
-        public async Task<IActionResult> BuscarPorIdAsync(int id)
-        {
-            try
-            {
-                var result = await _service.BuscarPorIdAsync(id);
-
-                if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
-
-                var hateoas = new HateoasResponse<ColaboradorDto>
-                {
-                    Data = result.Value,
-                    Links = new List<LinkDto>
-                    {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
-                        new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" }
-                    }
-                };
-
-                return Ok(hateoas);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
-            }
-        }
-
         [HttpGet("por-email")]
         [SwaggerOperation(
             Summary = ApiDoc.BuscarPorEmailAsyncSummary,
@@ -292,7 +249,6 @@ namespace ZenLogAPI.Controllers.v1
                     {
                         new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
                         new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
                         new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
@@ -330,7 +286,6 @@ namespace ZenLogAPI.Controllers.v1
                     Links = new List<LinkDto>
                     {
                         new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { matricula = result.Value.NumeroMatricula }), Method = "GET" },
                         new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
@@ -362,14 +317,13 @@ namespace ZenLogAPI.Controllers.v1
             {
                 var result = await _service.BuscarPorMatriculaAsync(numeroMatricula);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
-                
+
                 var hateoas = new HateoasResponse<ColaboradorDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
                         new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { numeroMatricula = result.Value.NumeroMatricula }), Method = "GET" },
-                        new LinkDto { Rel = "getById", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { email = result.Value.Email }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { cpf = result.Value.Cpf }), Method = "GET" },
                         new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },

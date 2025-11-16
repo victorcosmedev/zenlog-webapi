@@ -226,6 +226,8 @@ namespace ZenLogAPI.Controllers.v1
         #region Helpers 
         private PageResultModel<IEnumerable<HateoasResponse<LogEmocionalDto>>> BuildPageResultsForListar(PageResultModel<IEnumerable<LogEmocionalDto>> pageResult)
         {
+            var apiVersion = HttpContext.GetRequestedApiVersion();
+
             var pageResults = new PageResultModel<IEnumerable<HateoasResponse<LogEmocionalDto>>>
             {
                 Items = pageResult.Items.Select(log => new HateoasResponse<LogEmocionalDto>
@@ -233,13 +235,13 @@ namespace ZenLogAPI.Controllers.v1
                     Data = log,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = log.Id }), Method = "GET" },
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = log.Id, version = apiVersion.ToString() }), Method = "GET" },
                         new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = log.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = log.Id }), Method = "DELETE" },
-                        new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = log.ColaboradorId }), Method = "GET" }
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = log.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = log.Id, version = apiVersion.ToString() }), Method = "DELETE" },
+                        new LinkDto { Rel = "list-by-colaborador", Href = Url.Action(nameof(ListarPorColaboradorAsync), new { colaboradorId = log.ColaboradorId, version = apiVersion.ToString() }), Method = "GET" }
                     }
-                }),
+                }).ToList(),
                 TotalItens = pageResult.TotalItens,
                 NumeroPagina = pageResult.NumeroPagina,
                 TamanhoPagina = pageResult.TamanhoPagina

@@ -217,18 +217,20 @@ namespace ZenLogAPI.Controllers.v1
         #region Helpers 
         private PageResultModel<IEnumerable<HateoasResponse<EmpresaDto>>> BuildPageResultsForListar(PageResultModel<IEnumerable<EmpresaDto>> pageResult)
         {
+            var apiVersion = HttpContext.GetRequestedApiVersion();
+
             var pageResults = new PageResultModel<IEnumerable<HateoasResponse<EmpresaDto>>>
             {
                 Items = pageResult.Items.Select(empresa => new HateoasResponse<EmpresaDto>
                 {
                     Data = empresa,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = empresa.Id }), Method = "GET" },
-                    new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = empresa.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = empresa.Id }), Method = "DELETE" }
-                }
-                }),
+                    {
+                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = empresa.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = empresa.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = empresa.Id, version = apiVersion.ToString() }), Method = "DELETE" }
+                    }
+                }).ToList(),
                 TotalItens = pageResult.TotalItens,
                 NumeroPagina = pageResult.NumeroPagina,
                 TamanhoPagina = pageResult.TamanhoPagina
