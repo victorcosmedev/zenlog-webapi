@@ -351,7 +351,6 @@ namespace ZenLogAPI.Controllers.v2
                     Data = c,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = c.Id, version = apiVersion.ToString() }), Method = "GET" },
                         new LinkDto { Rel = "getByEmail", Href = Url.Action(nameof(BuscarPorEmailAsync), new { id = c.Email, version = apiVersion.ToString() }), Method = "GET" },
                         new LinkDto { Rel = "getByCpf", Href = Url.Action(nameof(BuscarPorCpfAsync), new { id = c.Cpf, version = apiVersion.ToString() }), Method = "GET" },
                         new LinkDto { Rel = "getByMatricula", Href = Url.Action(nameof(BuscarPorMatriculaAsync), new { id = c.NumeroMatricula, version = apiVersion.ToString()}), Method = "GET" },
