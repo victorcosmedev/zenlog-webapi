@@ -119,5 +119,6 @@ namespace ZenLogAPI.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
             }
+        }
     }
 }
