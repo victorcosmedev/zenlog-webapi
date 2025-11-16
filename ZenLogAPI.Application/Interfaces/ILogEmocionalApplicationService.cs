@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.LogEmocional;
 using ZenLogAPI.Domain.Models.OperationResult;
 using ZenLogAPI.Domain.Models.PageResultModel;
 

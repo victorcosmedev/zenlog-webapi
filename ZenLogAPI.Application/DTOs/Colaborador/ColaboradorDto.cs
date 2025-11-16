@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZenLogAPI.Application.DTOs
+namespace ZenLogAPI.Application.DTOs.Colaborador
 {
     public class ColaboradorDto
     {

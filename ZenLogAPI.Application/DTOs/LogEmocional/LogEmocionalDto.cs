@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ZenLogAPI.Domain.Entities;
 
-namespace ZenLogAPI.Application.DTOs
+namespace ZenLogAPI.Application.DTOs.LogEmocional
 {
     public class LogEmocionalDto
     {

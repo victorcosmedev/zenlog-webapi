@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
-using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.Colaborador;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Application.Mappers;
 using ZenLogAPI.Domain.Entities;

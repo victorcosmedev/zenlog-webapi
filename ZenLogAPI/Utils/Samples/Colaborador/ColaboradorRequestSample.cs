@@ -1,5 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Filters;
-using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.Colaborador;
 
 namespace ZenLogAPI.Utils.Samples.Colaborador
 {

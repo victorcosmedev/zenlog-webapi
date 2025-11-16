@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 using System.Diagnostics.Contracts;
 using System.Net;
-using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.Colaborador;
 using ZenLogAPI.Application.Interfaces;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;

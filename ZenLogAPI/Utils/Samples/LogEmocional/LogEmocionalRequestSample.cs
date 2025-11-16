@@ -1,5 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Filters;
-using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.LogEmocional;
 using ZenLogAPI.Domain.Entities;
 
 namespace ZenLogAPI.Utils.Samples.LogEmocional

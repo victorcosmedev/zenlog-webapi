@@ -1,4 +1,4 @@
-﻿using ZenLogAPI.Application.DTOs;
+﻿using ZenLogAPI.Application.DTOs.Colaborador;
 using ZenLogAPI.Domain.Entities;
 
 namespace ZenLogAPI.Application.Mappers

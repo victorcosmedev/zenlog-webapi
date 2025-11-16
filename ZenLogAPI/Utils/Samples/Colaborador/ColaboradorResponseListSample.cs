@@ -1,5 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Filters;
-using ZenLogAPI.Application.DTOs;
+using ZenLogAPI.Application.DTOs.Colaborador;
 using ZenLogAPI.Domain.Models.Hateoas;
 using ZenLogAPI.Domain.Models.PageResultModel;
 

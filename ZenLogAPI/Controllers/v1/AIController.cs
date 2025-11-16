@@ -74,6 +74,13 @@ namespace ZenLogAPI.Controllers.v1
 
                 var model = pipeline.Fit(dataView);
 
+                string caminhoDiretorio = Path.GetDirectoryName(_caminhoModelo);
+
+                if (!Directory.Exists(caminhoDiretorio))
+                {
+                    Directory.CreateDirectory(caminhoDiretorio);
+                }
+
                 _mlContext.Model.Save(model, dataView.Schema, _caminhoModelo);
 
                 return Ok("Modelo treinado e salvo com sucesso.");
