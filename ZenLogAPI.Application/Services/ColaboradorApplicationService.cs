@@ -32,7 +32,7 @@ namespace ZenLogAPI.Application.Services
                     return OperationResult<ColaboradorDto?>.Failure("Empresa associada não encontrada.", (int)HttpStatusCode.NotFound);
 
                 var dto = colaborador.ToDto();
-                return OperationResult<ColaboradorDto?>.Success(dto);
+                return OperationResult<ColaboradorDto?>.Success(dto, (int)HttpStatusCode.Created);
             }
             catch (Exception ex)
             {
