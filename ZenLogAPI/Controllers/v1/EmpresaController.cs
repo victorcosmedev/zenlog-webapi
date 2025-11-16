@@ -23,7 +23,7 @@ namespace ZenLogAPI.Controllers.v1
             _service = empresaService;
         }
 
-        [HttpPost]
+        [HttpPost(Name = "CreateEmpresaV1")]
         [SwaggerOperation(
             Summary = ApiDoc.AdicionarEmpresaAsyncSummary,
             Description = ApiDoc.AdicionarEmpresaAsyncDescription
@@ -42,17 +42,19 @@ namespace ZenLogAPI.Controllers.v1
 
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.BadRequest, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
+
                 var hateoas = new HateoasResponse<EmpresaDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                    new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                    new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
-                    new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("CreateEmpresaV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "get", Href = Url.RouteUrl("GetEmpresaByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateEmpresaV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteEmpresaV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" },
+                        new LinkDto { Rel = "list", Href = Url.RouteUrl("ListEmpresasV1", new { version = apiVersion.ToString() }), Method = "GET" }
+                    }
                 };
 
                 return StatusCode(result.StatusCode, hateoas);
@@ -63,7 +65,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = "UpdateEmpresaV1")]
         [SwaggerOperation(
             Summary = ApiDoc.EditarEmpresaAsyncSummary,
             Description = ApiDoc.EditarEmpresaAsyncDescription
@@ -81,17 +83,18 @@ namespace ZenLogAPI.Controllers.v1
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.BadRequest, result.Error);
 
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<EmpresaDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                    new LinkDto { Rel = "get", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                    new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                    new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
-                    new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("UpdateEmpresaV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "get", Href = Url.RouteUrl("GetEmpresaByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateEmpresaV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteEmpresaV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" },
+                        new LinkDto { Rel = "list", Href = Url.RouteUrl("ListEmpresasV1", new { version = apiVersion.ToString() }), Method = "GET" }
+                    }
                 };
 
                 return Ok(hateoas);
@@ -103,7 +106,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}", Name = "DeleteEmpresaV1")]
         [SwaggerOperation(
             Summary = ApiDoc.RemoverEmpresaAsyncSummary,
             Description = ApiDoc.RemoverEmpresaAsyncDescription
@@ -119,14 +122,15 @@ namespace ZenLogAPI.Controllers.v1
                 var result = await _service.RemoverAsync(id);
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<EmpresaDto>
                 {
-                    Data = result.Value, // Assumindo que o serviço retorna o objeto deletado
+                    Data = result.Value,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                    new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" }
-                }
+                    {
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateEmpresaV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "list", Href = Url.RouteUrl("ListEmpresasV1", new { version = apiVersion.ToString() }), Method = "GET" }
+                    }
                 };
 
                 return Ok(hateoas);
@@ -137,7 +141,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet]
+        [HttpGet(Name = "ListEmpresasV1")]
         [SwaggerOperation(
             Summary = ApiDoc.ListarEmpresasAsyncSummary,
             Description = ApiDoc.ListarEmpresasAsyncDescription
@@ -158,14 +162,15 @@ namespace ZenLogAPI.Controllers.v1
 
                 var pageResults = BuildPageResultsForListar(result.Value);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var response = new HateoasResponse<PageResultModel<IEnumerable<HateoasResponse<EmpresaDto>>>>
                 {
                     Data = pageResults,
                     Links = new List<LinkDto>
-                {
-                    new LinkDto { Rel = "self", Href = Url.Action(nameof(ListarAsync), new { pageNumber, pageSize }), Method = "GET" },
-                    new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" }
-                }
+                    {
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("ListEmpresasV1", new { pageNumber, pageSize, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateEmpresaV1", new { version = apiVersion.ToString() }), Method = "POST" }
+                    }
                 };
 
                 return Ok(response);
@@ -176,7 +181,7 @@ namespace ZenLogAPI.Controllers.v1
             }
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetEmpresaByIdV1")]
         [SwaggerOperation(
             Summary = ApiDoc.BuscarPorIdEmpresaAsyncSummary,
             Description = ApiDoc.BuscarPorIdEmpresaAsyncDescription
@@ -193,16 +198,17 @@ namespace ZenLogAPI.Controllers.v1
 
                 if (result.IsSuccess == false) return StatusCode((int)HttpStatusCode.NotFound, result.Error);
 
+                var apiVersion = HttpContext.GetRequestedApiVersion();
                 var hateoas = new HateoasResponse<EmpresaDto>
                 {
                     Data = result.Value,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = result.Value.Id }), Method = "GET" },
-                        new LinkDto { Rel = "create", Href = Url.Action(nameof(AdicionarAsync)), Method = "POST" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = result.Value.Id }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = result.Value.Id }), Method = "DELETE" },
-                        new LinkDto { Rel = "list", Href = Url.Action(nameof(ListarAsync)), Method = "GET" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetEmpresaByIdV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "create", Href = Url.RouteUrl("CreateEmpresaV1", new { version = apiVersion.ToString() }), Method = "POST" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateEmpresaV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteEmpresaV1", new { id = result.Value.Id, version = apiVersion.ToString() }), Method = "DELETE" },
+                        new LinkDto { Rel = "list", Href = Url.RouteUrl("ListEmpresasV1", new { version = apiVersion.ToString() }), Method = "GET" }
                     }
                 };
 
@@ -226,9 +232,9 @@ namespace ZenLogAPI.Controllers.v1
                     Data = empresa,
                     Links = new List<LinkDto>
                     {
-                        new LinkDto { Rel = "self", Href = Url.Action(nameof(BuscarPorIdAsync), new { id = empresa.Id, version = apiVersion.ToString() }), Method = "GET" },
-                        new LinkDto { Rel = "update", Href = Url.Action(nameof(EditarAsync), new { id = empresa.Id, version = apiVersion.ToString() }), Method = "PUT" },
-                        new LinkDto { Rel = "delete", Href = Url.Action(nameof(RemoverAsync), new { id = empresa.Id, version = apiVersion.ToString() }), Method = "DELETE" }
+                        new LinkDto { Rel = "self", Href = Url.RouteUrl("GetEmpresaByIdV1", new { id = empresa.Id, version = apiVersion.ToString() }), Method = "GET" },
+                        new LinkDto { Rel = "update", Href = Url.RouteUrl("UpdateEmpresaV1", new { id = empresa.Id, version = apiVersion.ToString() }), Method = "PUT" },
+                        new LinkDto { Rel = "delete", Href = Url.RouteUrl("DeleteEmpresaV1", new { id = empresa.Id, version = apiVersion.ToString() }), Method = "DELETE" }
                     }
                 }).ToList(),
                 TotalItens = pageResult.TotalItens,
