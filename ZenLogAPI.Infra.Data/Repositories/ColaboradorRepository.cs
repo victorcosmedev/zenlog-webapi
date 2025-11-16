@@ -21,7 +21,7 @@ namespace ZenLogAPI.Infra.Data.Repositories
 
         public async Task<ColaboradorEntity?> AdicionarAsync(ColaboradorEntity colaborador)
         {
-            var empresaExiste = await _context.Empresas.AnyAsync(e => e.Id == colaborador.EmpresaId);
+            var empresaExiste = (await _context.Empresas.CountAsync(e => e.Id == colaborador.EmpresaId)) > 0;
 
             if (empresaExiste == false) return null;
 
