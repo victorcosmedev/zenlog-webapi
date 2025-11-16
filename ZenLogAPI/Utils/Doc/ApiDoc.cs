@@ -81,5 +81,13 @@
         public const string ReadyCheckSummary = "Verifica se a API está pronta para receber tráfego (Readiness)";
         public const string ReadyCheckDescription = "Verifica a saúde das dependências externas (como o banco de dados Oracle). Retorna Healthy se a API e suas dependências estão prontas.";
         #endregion
+
+        #region AIController
+        public const string AITreinarModeloSummary = "Treina o modelo de IA";
+        public const string AITreinarModeloDescription = "Usa todos os logs emocionais do banco de dados para treinar o modelo de predição de bem-estar.";
+
+        public const string AIPredicaoSummary = "Prevê o nível emocional";
+        public const string AIPredicaoDescription = "Usa o modelo treinado para prever o nível emocional com base nos inputs de exercícios, descanso e hidratação.";
+        #endregion
     }
 }

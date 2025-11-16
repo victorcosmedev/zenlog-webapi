@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ZenLogAPI.Domain\ZenLogAPI.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTOs\AI\" />
-  </ItemGroup>
-
 </Project>
