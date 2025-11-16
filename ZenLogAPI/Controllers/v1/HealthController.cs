@@ -8,7 +8,7 @@ using ZenLogAPI.Application.DTOs.HealthChecks;
 using ZenLogAPI.Utils.Doc;
 using ZenLogAPI.Utils.Samples.Health;
 
-namespace ZenLogAPI.Controllers
+namespace ZenLogAPI.Controllers.v1
 {
     [ApiController]
     [AllowAnonymous]

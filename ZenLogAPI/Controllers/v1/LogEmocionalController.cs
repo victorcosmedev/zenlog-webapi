@@ -10,7 +10,7 @@ using ZenLogAPI.Domain.Models.PageResultModel;
 using ZenLogAPI.Utils.Doc;
 using ZenLogAPI.Utils.Samples.LogEmocional;
 
-namespace ZenLogAPI.Controllers
+namespace ZenLogAPI.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1.0")]

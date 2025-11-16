@@ -6,7 +6,7 @@ using System.Net;
 using ZenLogAPI.Application.DTOs;
 using ZenLogAPI.Application.Interfaces;
 
-namespace ZenLogAPI.Controllers
+namespace ZenLogAPI.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1.0")]
@@ -60,7 +60,7 @@ namespace ZenLogAPI.Controllers
 
                 var trainingData = result.Value.Select(log => new LogEmocionalTrainingData
                 {
-                    FezExercicios = log.FezExercicios ? (float)1 : (float)0,
+                    FezExercicios = log.FezExercicios ? 1 : 0,
                     HorasDescanso = log.HorasDescanso,
                     LitrosAgua = log.LitrosAgua,
                     NivelEmocional = (float)log.NivelEmocional

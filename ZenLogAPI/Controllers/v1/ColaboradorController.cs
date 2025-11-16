@@ -11,7 +11,7 @@ using ZenLogAPI.Domain.Models.PageResultModel;
 using ZenLogAPI.Utils.Doc;
 using ZenLogAPI.Utils.Samples.Colaborador;
 
-namespace ZenLogAPI.Controllers
+namespace ZenLogAPI.Controllers.v1
 {
     [ApiController]
     [ApiVersion("1.0")]
