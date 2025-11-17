@@ -14,6 +14,8 @@
 
 </div>
 
+## Link para o vídeo no Youtube
+https://youtu.be/xQ1kOgvgXr8
 ## Instalação do projeto - Orientações
 
 #### Credenciais
