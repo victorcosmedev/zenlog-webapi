@@ -25,7 +25,7 @@ Após inserir as credenciais, deve-se abrir o Packet Manager Console (Tools > Nu
 #### Rodar o projeto
 Feito isso, basta inicializar o projeto via **HTTP** (não HTTPS) e o Swagger da API será aberto automaticamente. Caso isso não ocorra, ele pode ser acessado através da URL `http://localhost:5045/swagger/index.html`.
 ## Como rodar os testes?
-Os testes foram construídos de acordo com as orientações em aula, ou seja, com os devidos mocks. Temos 2 testes na nossa aplicação, o **MotoRepositoryTest** e o **EnderecoRepositoryTest**. 
+Os testes foram construídos de acordo com as orientações em aula, ou seja, com os devidos mocks. Temos 2 testes na nossa aplicação, o **LogEmocionalRepositoryTest** e o **EmpresaRepositoryTest**.
 - Para rodá-los, basta ir ao canto superior esquerdo do Visual Studio e clicar em **"Tests"**. 
 - Após isso, clique em **"Test Explorer"** e no canto superior esquerdo da aba que abrir, clique na seta para baixo ao lado do botão de *play*. 
 - Clique em "Run All Tests In View".
