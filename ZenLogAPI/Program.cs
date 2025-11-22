@@ -1,6 +1,7 @@
 using Asp.Versioning.ApiExplorer;
 using Swashbuckle.AspNetCore.Filters;
 using ZenLogAPI.IoC;
+using ZenLogAPI.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
         }
     });
 }
+
+app.UseMiddleware<TracingMiddleware>();
 
 app.UseHttpsRedirection();
 
